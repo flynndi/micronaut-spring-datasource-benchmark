@@ -1,0 +1,19 @@
+[versions]
+micronaut = "4.8.2"
+micronautGradlePlugin = "4.5.3"
+h2 = "2.1.212"
+springboot = "3.5.0"
+springDependencyManagement = "1.1.7"
+springJdbc = "6.2.2"
+
+[libraries]
+micronaut = { group = "io.micronaut.platform", name = "micronaut-platform", version.ref = "micronaut" }
+h2 = { group = "com.h2database", name = "h2", version.ref = "h2" }
+spring-boot-starter = { group = "org.springframework.boot", name = "spring-boot-starter", version.ref = "springboot" }
+spring-jdbc = { group = "org.springframework", name = "spring-jdbc", version.ref = "springJdbc" }
+
+[plugins]
+micronaut-application = { id = "io.micronaut.application", version.ref = "micronautGradlePlugin" }
+micronaut-aot = { id = "io.micronaut.aot", version.ref = "micronautGradlePlugin" }
+spring-boot = { id = "org.springframework.boot", version.ref = "springboot" }
+spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "springDependencyManagement"}
