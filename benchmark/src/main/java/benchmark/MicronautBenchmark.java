@@ -4,6 +4,7 @@ import benchmark.config.MicronautDatabaseInitializer;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.data.connection.ConnectionDefinition;
 import io.micronaut.data.connection.ConnectionOperations;
+import io.micronaut.data.connection.jdbc.operations.DefaultDataSourceConnectionOperations;
 import org.openjdk.jmh.annotations.*;
 
 import java.io.IOException;
@@ -34,7 +35,7 @@ public class MicronautBenchmark {
         MICRONAUT_CONFIG.put("logger.levels.io.micronaut.context.env", "INFO");
     }
 
-    @Param({"10", "20", "50", "100", "200", "500", "1000"})
+    @Param({"10", "20", "50", "100", "200", "500", "1000", "10000"})
     private int dataCount;
 
     private ApplicationContext micronautContext;
@@ -44,7 +45,7 @@ public class MicronautBenchmark {
     @Setup
     public void initialize() throws SQLException, IOException {
         micronautContext = ApplicationContext.run(MICRONAUT_CONFIG);
-        connectionOperations = micronautContext.getBean(ConnectionOperations.class);
+        connectionOperations = micronautContext.getBean(DefaultDataSourceConnectionOperations.class);
         micronautContext.registerSingleton(MicronautDatabaseInitializer.class, new MicronautDatabaseInitializer(connectionOperations));
         MicronautDatabaseInitializer micronautInitializer = micronautContext.getBean(MicronautDatabaseInitializer.class);
         micronautInitializer.initialize(dataCount);
@@ -53,8 +54,11 @@ public class MicronautBenchmark {
     @Benchmark
     public void testMicronautWithDatasource() {
         connectionOperations.execute(ConnectionDefinition.DEFAULT, status -> {
-            try (Connection connection = status.getConnection()) {
-                return connection.createStatement().execute("SELECT * FROM data_micronaut");
+            try {
+                Connection connection = status.getConnection();
+                try (var stmt = connection.createStatement()) {
+                    return stmt.execute("SELECT * FROM data_micronaut");
+                }
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }

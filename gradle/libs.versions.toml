@@ -3,7 +3,6 @@ micronaut = "4.8.2"
 micronautGradlePlugin = "4.5.3"
 h2 = "2.1.212"
 springboot = "3.5.0"
-springDependencyManagement = "1.1.7"
 springJdbc = "6.2.2"
 
 [libraries]
@@ -16,4 +15,3 @@ spring-jdbc = { group = "org.springframework", name = "spring-jdbc", version.ref
 micronaut-application = { id = "io.micronaut.application", version.ref = "micronautGradlePlugin" }
 micronaut-aot = { id = "io.micronaut.aot", version.ref = "micronautGradlePlugin" }
 spring-boot = { id = "org.springframework.boot", version.ref = "springboot" }
-spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "springDependencyManagement"}
