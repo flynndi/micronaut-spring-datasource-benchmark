@@ -1,20 +1,19 @@
 plugins {
-    id("java")
+    id("application")
     id("java-library")
-    alias(libs.plugins.micronaut.application)
-    alias(libs.plugins.micronaut.aot)
+//    alias(libs.plugins.micronaut.application)
+//    alias(libs.plugins.micronaut.aot)
 }
 
 dependencies {
     api(platform(libs.micronaut))
-    runtimeOnly("org.yaml:snakeyaml")
-    runtimeOnly("com.h2database:h2")
-    api("io.micronaut.data:micronaut-data-connection")
-    api("io.micronaut.data:micronaut-data-tx-jdbc")
+    api("io.micronaut.data:micronaut-data-connection-jdbc")
     api("io.micronaut.sql:micronaut-jdbc-hikari")
-    api("com.zaxxer:HikariCP:6.3.0")
-    api("io.micronaut:micronaut-aop")
-    runtimeOnly("ch.qos.logback:logback-classic")
+
+    implementation("io.micronaut:micronaut-http-server-netty")
+    implementation("io.micronaut:micronaut-inject")
+
+    runtimeOnly("com.h2database:h2")
 }
 
 application {
@@ -26,7 +25,9 @@ java {
     targetCompatibility = JavaVersion.toVersion("17")
 }
 
+/*
 micronaut {
+    version(libs.versions.micronaut.get())
     runtime("netty")
     testRuntime("junit5")
     processing {
@@ -46,3 +47,4 @@ micronaut {
         replaceLogbackXml = true
     }
 }
+*/

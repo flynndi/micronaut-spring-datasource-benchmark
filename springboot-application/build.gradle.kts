@@ -2,7 +2,6 @@ plugins {
     id("java")
     id("java-library")
     alias(libs.plugins.spring.boot)
-    alias(libs.plugins.spring.dependency.management)
 }
 
 java {
@@ -12,7 +11,9 @@ java {
 }
 
 dependencies {
-    api(libs.spring.boot.starter)
+    api(libs.spring.boot.starter) {
+        exclude("org.springframework.boot", "spring-boot-starter-logging")
+    }
     api(libs.spring.jdbc)
     runtimeOnly(libs.h2)
 }

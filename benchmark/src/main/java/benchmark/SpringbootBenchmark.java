@@ -33,7 +33,7 @@ public class SpringbootBenchmark {
         SPRINGBOOT_CONFIG.put("spring.datasource.hikari.validation-timeout", 5000);
     }
 
-    @Param({"10", "20", "50", "100", "200", "500", "1000"})
+    @Param({"10", "20", "50", "100", "200", "500", "1000", "10000"})
     private int dataCount;
 
     private ConfigurableApplicationContext springContext;
@@ -52,7 +52,9 @@ public class SpringbootBenchmark {
     public void testSpringBootWithDatasource() {
         Connection connection = DataSourceUtils.getConnection(dataSource);
         try {
-            connection.createStatement().execute("SELECT * FROM data_springboot");
+            try (var stmt = connection.createStatement()) {
+                stmt.execute("SELECT * FROM data_springboot");
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
